@@ -62,6 +62,7 @@ bool UCTNode::create_children(Network & network,
                               std::atomic<int>& nodecount,
                               GameState& state,
                               float& eval,
+                              bool is_root,
                               float min_psa_ratio) {
     // no successors in final state
     if (state.get_passes() >= 2) {
@@ -79,8 +80,11 @@ bool UCTNode::create_children(Network & network,
         return false;
     }
 
-    const auto raw_netlist = network.get_output(
-        &state, Network::Ensemble::RANDOM_SYMMETRY);
+    const auto raw_netlist = (is_root)?
+		network.get_output(
+			&state, Network::Ensemble::AVERAGE) :
+		network.get_output(
+			&state, Network::Ensemble::RANDOM_SYMMETRY);
 
     // DCNN returns winrate as side to move
     const auto stm_eval = raw_netlist.winrate;

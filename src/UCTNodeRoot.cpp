@@ -209,7 +209,7 @@ void UCTNode::prepare_root_node(Network & network, int color,
     float root_eval;
     const auto had_children = has_children();
     if (expandable()) {
-        create_children(network, nodes, root_state, root_eval);
+        create_children(network, nodes, root_state, root_eval, true);
     }
     if (had_children) {
         root_eval = get_net_eval(color);
